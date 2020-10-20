@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.ericsson.com/em/emm/serviceprovider/v1_0/backend/client" xmlns:ns2="http://www.ericsson.com/em/emm/serviceprovider/v1_0/backend/client">
+  <xs:element name="getfinancialresourceinformationresponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="message" form="unqualified" type="xs:string"/>
+        <xs:element name="extension" form="unqualified">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="statuscode" form="unqualified" type="xs:integer"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
