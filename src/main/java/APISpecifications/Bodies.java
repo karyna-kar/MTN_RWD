@@ -1,6 +1,7 @@
 package APISpecifications;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Bodies {
     public static String getGetFRIBody(String account) {
@@ -19,20 +20,20 @@ public class Bodies {
                 "</ns0:getfinancialresourceinformationrequest>";
     }
 
-    public static String getVerifyFRIBody(ArrayList<String> details) {
+    public static String getVerifyFRIBody(HashMap<String, String> details) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<ns0:verifyfinancialresourceinformationrequest xmlns:ns0=\"http://www.ericsson.com/em/emm/serviceprovider/v1_0/backend/client\">   \n" +
-                "\t\t<resource>FRI:" + details.get(0) + "@FISA.bank/SP</resource>\n" +
-                "    <accountholderid>ID:" + details.get(1) + "/MSISDN</accountholderid>\n" +
+                "\t\t<resource>FRI:" + details.get("Account") + "@FISA.bank/SP</resource>\n" +
+                "    <accountholderid>ID:" + details.get("MobilePhone") + "/MSISDN</accountholderid>\n" +
                 "   <extension/>\n" +
                 "</ns0:verifyfinancialresourceinformationrequest>";
     }
 
-    public static String getVerifyFRIInvalidBody(ArrayList<String> details) {
+    public static String getVerifyFRIInvalidBody(HashMap<String, String> details) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<ns0:verifyfinancialresourceinformationrequest xmlns:ns0=\"http://www.ericsson.com/em/emm/serviceprovider/v1_0/backend/client\">   \n" +
-                "\t\t<resource>FR1I:" + details.get(0) + "@FISA.bank/SP</resource>\n" +
-                "    <accountholderid>ID:" + details.get(1) + "/MSISDN</accountholderid>\n" +
+                "\t\t<resource>FR1I:" + details.get("Account") + "@FISA.bank/SP</resource>\n" +
+                "    <accountholderid>ID:" + details.get("MobilePhone") + "/MSISDN</accountholderid>\n" +
                 "   <extension/>\n" +
                 "</ns0:verifyfinancialresourceinformationrequest>";
     }
@@ -52,16 +53,16 @@ public class Bodies {
                 "</ns0:paymentrequest>";
     }
 
-    public static String getWithdrawalBody(ArrayList<String> details) {
+    public static String getWithdrawalBody(HashMap<String, String> details) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<ns0:withdrawrequest xmlns:ns0=\"http://www.ericsson.com/em/emm/serviceprovider/v1_0/backend/client\">\n" +
-                "    <resource>FRI:"+details.get(0)+"@FISA.bank/SP</resource>\n" +
-                "    <accountholderid>ID:"+details.get(1)+"/MSISDN</accountholderid>\n" +
+                "    <resource>FRI:"+details.get("Account")+"@FISA.bank/SP</resource>\n" +
+                "    <accountholderid>ID:"+details.get("MobilePhone")+"/MSISDN</accountholderid>\n" +
                 "    <amount>\n" +
-                "        <amount>"+details.get(2)+"</amount>\n" +
-                "        <currency>RWF</currency>\n" +
+                "        <amount>"+details.get("Amount")+"</amount>\n" +
+                "        <currency>"+details.get("Currency")+"</currency>\n" +
                 "    </amount>\n" +
-                "    <transactionid>"+details.get(3)+"</transactionid>\n" +
+                "    <transactionid>"+details.get("TransactionID")+"</transactionid>\n" +
                 "</ns0:withdrawrequest>";
     }
 }

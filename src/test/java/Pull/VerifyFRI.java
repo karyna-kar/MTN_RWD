@@ -34,7 +34,7 @@ public class VerifyFRI {
         Assert.assertEquals(Parser.getStatusVerifyFRI(response), "true");
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, enabled = false)
     public void verifyFRIInactiveCustomerMB() {
         response = given()
                 .spec(requestSpec)
