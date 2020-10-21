@@ -16,16 +16,16 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.matcher.RestAssuredMatchers.matchesXsdInClasspath;
 
 public class VerifyFRI {
-    private static final RequestSpecification requestSpec = APISpecification.getRequestSpecification();
+    private static RequestSpecification requestSpec = APISpecification.getRequestSpecification();
     private static final ResponseSpecification responseSpec = APISpecification.getResponseSpecification();
     private Response response = null;
 
     @Test(priority = 1)
-    public void verifyFRIActiveMBByAccount() {
+    public void verifyFRIActiveMB() {
         response = given()
                 .spec(requestSpec)
                 .relaxedHTTPSValidation()
-                .body(Bodies.getVerifyFRIBody(SQLquery.getAccountActiveCustomerMB()))
+                .body(Bodies.getVerifyFRIBody(SQLquery.getCurrentRWFAccountActiveMB("A")))
                 .expect().spec(responseSpec)
                 .body(matchesXsdInClasspath("verifyFRI.xsd"))
                 .when()
@@ -91,11 +91,11 @@ public class VerifyFRI {
     }
 
     @Test(priority = 6)
-    public void verifyFRIInvalidFormat() {
+    public void verifyFRIInvalidFRIFormat() {
         response = given()
                 .spec(requestSpec)
                 .relaxedHTTPSValidation()
-                .body(Bodies.getVerifyFRIInvalidBody(SQLquery.getAccountActiveCustomerMB()))
+                .body(Bodies.getVerifyFRIInvalidBody(SQLquery.getCurrentRWFAccountActiveMB("A")))
                 .expect().spec(responseSpec)
                 .body(matchesXsdInClasspath("verifyFRI.xsd"))
                 .when()
@@ -106,11 +106,11 @@ public class VerifyFRI {
 
     @Test(priority = 7)
     public void verifyFRIInvalidAuthorization() {
-        RequestSpecification invalidRequestSpec = APISpecification.getInvalidRequestSpecification();
+        requestSpec = APISpecification.getInvalidRequestSpecification();
         response = given()
-                .spec(invalidRequestSpec)
+                .spec(requestSpec)
                 .relaxedHTTPSValidation()
-                .body(Bodies.getVerifyFRIInvalidBody(SQLquery.getAccountActiveCustomerMB()))
+                .body(Bodies.getVerifyFRIInvalidBody(SQLquery.getCurrentRWFAccountActiveMB("A")))
                 .expect().spec(responseSpec)
                 .body(matchesXsdInClasspath("verifyFRI.xsd"))
                 .when()

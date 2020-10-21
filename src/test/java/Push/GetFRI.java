@@ -97,7 +97,7 @@ public class GetFRI extends TestsSetup {
     }
 
     @Test(priority = 6)
-    public void getFRIInvalidFormat() {
+    public void getFRIInvalidFRIFormat() {
         response = given()
                 .spec(requestSpec)
                 .relaxedHTTPSValidation()

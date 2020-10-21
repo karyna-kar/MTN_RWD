@@ -65,4 +65,17 @@ public class Bodies {
                 "    <transactionid>"+details.get("TransactionID")+"</transactionid>\n" +
                 "</ns0:withdrawrequest>";
     }
+
+    public static String getWithdrawalInvalidBody(HashMap<String, String> details) {
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<ns0:withdrawrequest xmlns:ns0=\"http://www.ericsson.com/em/emm/serviceprovider/v1_0/backend/client\">\n" +
+                "    <resource>FR1I:"+details.get("Account")+"@FISA.bank/SP</resource>\n" +
+                "    <accountholderid>ID:"+details.get("MobilePhone")+"/MSISDN</accountholderid>\n" +
+                "    <amount>\n" +
+                "        <amount>"+details.get("Amount")+"</amount>\n" +
+                "        <currency>"+details.get("Currency")+"</currency>\n" +
+                "    </amount>\n" +
+                "    <transactionid>"+details.get("TransactionID")+"</transactionid>\n" +
+                "</ns0:withdrawrequest>";
+    }
 }

@@ -20,7 +20,6 @@ public class SQLquery {
         } catch (SQLException e) {
             Logs.error(e.getMessage());
         }
-        // return convertAccountNumb(account);
         return account;
     }
 
@@ -85,16 +84,80 @@ public class SQLquery {
         } catch (SQLException e) {
             Logs.error(e.getMessage());
         }
+        //Changing the first character to 1 in order to make account not existing
         return "1" + customer.substring(1);
     }
 
-    public static HashMap<String, String> getAccountActiveCustomerMB() {
+    public static HashMap<String, String> getCurrentRWFAccountActiveMB(String status, Double amount) {
         HashMap<String, String> sqlResult = new HashMap<>();
-       // ArrayList<String> sqlResult = new ArrayList<>();
         try {
             String query = "Select top 1  ccodcta, cl.cMobileBankingPhone from accmctas ac\n" +
                     "INNER JOIN climide cl ON ac.ccodcli = cl.ccodcli\n" +
-                    "where ac.cestado = 'A' and ac.cclaper = 1 and ac.cmoneda=1 and ac.MobileRegistrationStatus=2 and ac.cMobileBanking='A' and nsaldis > 100";
+                    "where ac.cestado = '"+status+"' and ac.cclaper = 1 and ac.cmoneda=1 and ac.MobileRegistrationStatus=2 and ac.cMobileBanking='A' and nsaldis >= "+amount+"";
+            ResultSet resultSet = JDBCConnection.selectFromDB(query);
+            sqlResult.put("Account", resultSet.getString("ccodcta"));
+            sqlResult.put("MobilePhone", resultSet.getString("cMobileBankingPhone").trim());
+            Logs.info("Account number is " + sqlResult.get("Account") + ", MobileBankingPhone is " + sqlResult.get("MobilePhone"));
+        } catch (SQLException e) {
+            Logs.error(e.getMessage());
+        }
+        return sqlResult;
+    }
+
+    public static HashMap<String, String> getCurrentRWFAccountNotMoney(String status, Double amount) {
+        HashMap<String, String> sqlResult = new HashMap<>();
+        try {
+            String query = "Select top 1  ccodcta, cl.cMobileBankingPhone from accmctas ac\n" +
+                    "INNER JOIN climide cl ON ac.ccodcli = cl.ccodcli\n" +
+                    "where ac.cestado = '"+status+"' and ac.cclaper = 1 and ac.cmoneda=1 and ac.MobileRegistrationStatus=2 and ac.cMobileBanking='A' and nsaldis < "+amount+"";
+            ResultSet resultSet = JDBCConnection.selectFromDB(query);
+            sqlResult.put("Account", resultSet.getString("ccodcta"));
+            sqlResult.put("MobilePhone", resultSet.getString("cMobileBankingPhone").trim());
+            Logs.info("Account number is " + sqlResult.get("Account") + ", MobileBankingPhone is " + sqlResult.get("MobilePhone"));
+        } catch (SQLException e) {
+            Logs.error(e.getMessage());
+        }
+        return sqlResult;
+    }
+
+    public static HashMap<String, String> getCurrentRWFAccountActiveMB(String status) {
+        HashMap<String, String> sqlResult = new HashMap<>();
+        try {
+            String query = "Select top 1  ccodcta, cl.cMobileBankingPhone from accmctas ac\n" +
+                    "INNER JOIN climide cl ON ac.ccodcli = cl.ccodcli\n" +
+                    "where ac.cestado = '"+status+"' and ac.cclaper = 1 and ac.cmoneda=1 and ac.MobileRegistrationStatus=2 and ac.cMobileBanking='A' and nsaldis > 0";
+            ResultSet resultSet = JDBCConnection.selectFromDB(query);
+            sqlResult.put("Account", resultSet.getString("ccodcta"));
+            sqlResult.put("MobilePhone", resultSet.getString("cMobileBankingPhone").trim());
+            Logs.info("Account number is " + sqlResult.get("Account") + ", MobileBankingPhone is " + sqlResult.get("MobilePhone"));
+        } catch (SQLException e) {
+            Logs.error(e.getMessage());
+        }
+        return sqlResult;
+    }
+
+    public static HashMap<String, String> getActiveSavingRWFAccountActiveMB() {
+        HashMap<String, String> sqlResult = new HashMap<>();
+        try {
+            String query = "Select top 1  ccodcta, cl.cMobileBankingPhone from avimctas av\n" +
+                    "INNER JOIN climide cl ON av.ccodcli = cl.ccodcli\n" +
+                    "where av.cestado = 'A' and av.cclaper = 1 and av.cmoneda=1 and av.MobileRegistrationStatus=2 and av.cMobileBanking='A' and nsaldis > 100";
+            ResultSet resultSet = JDBCConnection.selectFromDB(query);
+            sqlResult.put("Account", resultSet.getString("ccodcta"));
+            sqlResult.put("MobilePhone", resultSet.getString("cMobileBankingPhone").trim());
+            Logs.info("Account number is " + sqlResult.get("Account") + ", MobileBankingPhone is " + sqlResult.get("MobilePhone"));
+        } catch (SQLException e) {
+            Logs.error(e.getMessage());
+        }
+        return sqlResult;
+    }
+
+    public static HashMap<String, String> getActiveUSDAccountActiveMB() {
+        HashMap<String, String> sqlResult = new HashMap<>();
+        try {
+            String query = "Select top 1  ccodcta, cl.cMobileBankingPhone from accmctas ac\n" +
+                    "INNER JOIN climide cl ON ac.ccodcli = cl.ccodcli\n" +
+                    "where ac.cestado = 'A' and ac.cclaper = 1 and ac.cmoneda=2 and ac.MobileRegistrationStatus=2 and ac.cMobileBanking='A' and nsaldis > 2";
             ResultSet resultSet = JDBCConnection.selectFromDB(query);
             sqlResult.put("Account", resultSet.getString("ccodcta"));
             sqlResult.put("MobilePhone", resultSet.getString("cMobileBankingPhone").trim());
@@ -195,16 +258,7 @@ public class SQLquery {
         } catch (SQLException e) {
             Logs.error(e.getMessage());
         }
-        String uniqueID = Long.toString(Long.parseLong(providerTransactionID)+1);
-
-        return uniqueID;
-    }
-
-    public static HashMap<String, String> getWithdrawalActiveAccountMB() {
-        HashMap<String, String>  data= getAccountActiveCustomerMB();
-        data.put("Amount", "101.10");
-        data.put("TransactionID", getUniqueTransactionID());
-        return data;
+        return Long.toString(Long.parseLong(providerTransactionID)+1);
     }
 
     public static String getVoucherNumber(String transactionID) {
@@ -219,5 +273,20 @@ public class SQLquery {
             Logs.error(e.getMessage());
         }
         return voucherNumber;
+    }
+
+
+  public static String getTransactionMinimumLimit() {
+      String minLimit = "";
+      try {
+          String query = "  select * from lfsbaku.api.CurrencyConfiguration\n" +
+                  "  where Currency  = 'RWF' and ProviderID = (Select ID from lfsbaku..ExternalProvider where ProviderCode = 'Ericsson')";
+          ResultSet resultSet = JDBCConnection.selectFromDB(query);
+          minLimit = resultSet.getString("TransactionMinimumLimit");
+          Logs.info("Transaction Minimum Limit RWF is" + minLimit);
+      } catch (SQLException e) {
+          Logs.error(e.getMessage());
+      }
+      return minLimit;
     }
 }

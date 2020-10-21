@@ -18,7 +18,6 @@ public class APISpecification {
         auth.setPassword(Property.getAuthProperty("mtn.AuthPassword"));
 
         return new RequestSpecBuilder()
-                //.setBaseUri(EndPoints.BASEURL)
                 .setAuth(auth)
                 .setContentType(ContentType.XML)
                 .log(LogDetail.ALL)
@@ -32,7 +31,6 @@ public class APISpecification {
         auth.setPassword(Property.getAuthProperty("paswInvalid"));
 
         return new RequestSpecBuilder()
-                //.setBaseUri(EndPoints.BASEURL)
                 .setAuth(auth)
                 .setContentType(ContentType.XML)
                 .log(LogDetail.ALL)

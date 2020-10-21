@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.ericsson.com/em/emm/serviceprovider/v1_0/backend/client" xmlns:ns2="http://www.ericsson.com/em/emm/serviceprovider/v1_0/backend/client">
+    <xs:element name="withdrawresponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="transactionid" form="unqualified" type="xs:integer"/>
+                <xs:element name="providertransactionid" form="unqualified" type="xs:NMTOKEN"/>
+                <xs:element name="status" form="unqualified" type="xs:NCName"/>
+                <xs:element name="message" form="unqualified" type="xs:string"/>
+                <xs:element name="extension" form="unqualified">
+                    <xs:complexType/>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
