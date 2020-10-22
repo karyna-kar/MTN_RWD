@@ -27,10 +27,10 @@ public class VerifyFRI {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getVerifyFRIBody(SQLquery.getCurrentRWFAccountActiveMB("A")))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("verifyFRI.xsd"))
                 .when()
                 .post(EndPoints.VERIFYFRI);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("VerifyFRI.xsd"));
         Assert.assertEquals(Parser.getStatusVerifyFRI(response), "true");
     }
 
@@ -41,10 +41,10 @@ public class VerifyFRI {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getVerifyFRIBody(SQLquery.getAccountInactiveCustomerMB()))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("verifyFRI.xsd"))
                 .when()
                 .post( EndPoints.VERIFYFRI);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("VerifyFRI.xsd"));
         Assert.assertEquals(Parser.getStatusVerifyFRI(response), "false");
     }
 
@@ -55,10 +55,10 @@ public class VerifyFRI {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getVerifyFRIBody(SQLquery.getAccountInactiveAccountMB()))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("verifyFRI.xsd"))
                 .when()
                 .post( EndPoints.VERIFYFRI);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("VerifyFRI.xsd"));
         Assert.assertEquals(Parser.getStatusVerifyFRI(response), "false");
     }
 
@@ -69,10 +69,10 @@ public class VerifyFRI {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getVerifyFRIBody(SQLquery.getNotMatchingPhoneActiveMB()))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("verifyFRI.xsd"))
                 .when()
                 .post( EndPoints.VERIFYFRI);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("VerifyFRI.xsd"));
         Assert.assertEquals(Parser.getStatusVerifyFRI(response), "false");
     }
 
@@ -83,10 +83,10 @@ public class VerifyFRI {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getVerifyFRIBody(SQLquery.getNotExistingAccountMB()))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("verifyFRI.xsd"))
                 .when()
                 .post(EndPoints.VERIFYFRI);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("VerifyFRI.xsd"));
         Assert.assertEquals(Parser.getStatusVerifyFRI(response), "false");
     }
 
@@ -97,10 +97,10 @@ public class VerifyFRI {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getVerifyFRIInvalidBody(SQLquery.getCurrentRWFAccountActiveMB("A")))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("verifyFRI.xsd"))
                 .when()
                 .post( EndPoints.VERIFYFRI);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("VerifyFRI.xsd"));
         Assert.assertEquals(Parser.getStatusVerifyFRI(response), "false");
     }
 
@@ -112,10 +112,10 @@ public class VerifyFRI {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getVerifyFRIInvalidBody(SQLquery.getCurrentRWFAccountActiveMB("A")))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("verifyFRI.xsd"))
                 .when()
                 .post( EndPoints.VERIFYFRI);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("VerifyFRI.xsd"));
         Assert.assertEquals(Parser.getStatusVerifyFRI(response), "false");
     }
 }

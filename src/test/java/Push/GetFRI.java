@@ -29,11 +29,11 @@ public class GetFRI extends TestsSetup {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getGetFRIBody(SQLquery.getActiveCurrentAccount()))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("getFRI.xsd"))
                 .when()
                 .post( EndPoints.GETFRI);
-        Logs.info("Request: " + requestSpec.log().all().toString());
+        //Logs.info("Request: " + requestSpec.log().all().toString());
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("GetFRI.xsd"));
         Assert.assertEquals(Parser.getStatusGetFRI(response), "01");
     }
 
@@ -44,10 +44,10 @@ public class GetFRI extends TestsSetup {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getGetFRIBody(SQLquery.getNotExistingAccount()))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("getFRI.xsd"))
                 .when()
                 .post(EndPoints.GETFRI);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("GetFRI.xsd"));
         Assert.assertEquals(Parser.getStatusGetFRI(response), "00");
         Assert.assertEquals(Parser.getMessageGetFRI(response), APIError.NOTEXISTINGACCOUNT.getErrorMessage());
     }
@@ -59,10 +59,10 @@ public class GetFRI extends TestsSetup {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getGetFRIBody(SQLquery.getCustomerWithOneAccount()))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("getFRI.xsd"))
                 .when()
                 .post(EndPoints.GETFRI);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("GetFRI.xsd"));
         Assert.assertEquals(Parser.getStatusGetFRI(response), "01");
     }
 
@@ -73,10 +73,10 @@ public class GetFRI extends TestsSetup {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getGetFRIBody(SQLquery.getCustomerWithMultipleAccount()))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("getFRI.xsd"))
                 .when()
                 .post(EndPoints.GETFRI);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("GetFRI.xsd"));
         Assert.assertEquals(Parser.getStatusGetFRI(response), "00");
         Assert.assertEquals(Parser.getMessageGetFRI(response), APIError.MULTIPLEACCOUNTS.getErrorMessage());
     }
@@ -88,10 +88,10 @@ public class GetFRI extends TestsSetup {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getGetFRIBody(SQLquery.getNotExistingCustomer()))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("getFRI.xsd"))
                 .when()
                 .post(EndPoints.GETFRI);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("GetFRI.xsd"));
         Assert.assertEquals(Parser.getStatusGetFRI(response), "00");
         Assert.assertEquals(Parser.getMessageGetFRI(response), APIError.NOTEXISTINGCUSTOMER.getErrorMessage());
     }
@@ -103,10 +103,10 @@ public class GetFRI extends TestsSetup {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getGetFRIInvalidBody(SQLquery.getActiveCurrentAccount()))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("getFRI.xsd"))
                 .when()
                 .post( EndPoints.GETFRI);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("GetFRI.xsd"));
         Assert.assertEquals(Parser.getStatusGetFRI(response), "00");
         Assert.assertEquals(Parser.getMessageGetFRI(response), APIError.INVALIDFRIFORMAT.getErrorMessage());
     }
@@ -119,10 +119,10 @@ public class GetFRI extends TestsSetup {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getGetFRIBody(SQLquery.getActiveCurrentAccount()))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("getFRI.xsd"))
                 .when()
                 .post( EndPoints.GETFRI);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("GetFRI.xsd"));
         Assert.assertEquals(Parser.getStatusGetFRI(response), "00");
         Assert.assertEquals(Parser.getMessageGetFRI(response), APIError.INVALIDAUTHENTICATION.getErrorMessage());
     }

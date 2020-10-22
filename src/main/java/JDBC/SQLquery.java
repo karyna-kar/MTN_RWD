@@ -104,12 +104,12 @@ public class SQLquery {
         return sqlResult;
     }
 
-    public static HashMap<String, String> getCurrentRWFAccountNotMoney(String status, Double amount) {
+    public static HashMap<String, String> getCurrentRWFAccountInsufficientBalance(Double amount) {
         HashMap<String, String> sqlResult = new HashMap<>();
         try {
             String query = "Select top 1  ccodcta, cl.cMobileBankingPhone from accmctas ac\n" +
                     "INNER JOIN climide cl ON ac.ccodcli = cl.ccodcli\n" +
-                    "where ac.cestado = '"+status+"' and ac.cclaper = 1 and ac.cmoneda=1 and ac.MobileRegistrationStatus=2 and ac.cMobileBanking='A' and nsaldis < "+amount+"";
+                    "where ac.cestado = 'A' and ac.cclaper = 1 and ac.cmoneda=1 and ac.MobileRegistrationStatus=2 and ac.cMobileBanking='A' and nsaldis < "+amount+"";
             ResultSet resultSet = JDBCConnection.selectFromDB(query);
             sqlResult.put("Account", resultSet.getString("ccodcta"));
             sqlResult.put("MobilePhone", resultSet.getString("cMobileBankingPhone").trim());
@@ -260,6 +260,21 @@ public class SQLquery {
         }
         return Long.toString(Long.parseLong(providerTransactionID)+1);
     }
+
+    public static String getExistingTransactionID() {
+        String providerTransactionID = "";
+        try {
+            String query = "Select top 1 * from lfsbaku.dbo.ExternalProviderTransaction \n" +
+                    "where ProviderTransactionId not like '%-R' order by ID desc";
+            ResultSet resultSet = JDBCConnection.selectFromDB(query);
+            providerTransactionID = resultSet.getString("ProviderTransactionId");
+            Logs.info("ProviderTransactionId " + providerTransactionID);
+        } catch (SQLException e) {
+            Logs.error(e.getMessage());
+        }
+        return providerTransactionID;
+    }
+
 
     public static String getVoucherNumber(String transactionID) {
         String voucherNumber = "";

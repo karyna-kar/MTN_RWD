@@ -11,11 +11,9 @@ public enum APIError {
     INVALIDCURRENCY("Currency of the account does not match to currency of transaction."),
     INACTIVEMBCUTSOMER("The customer is not activated for mobile banking."),
     INACTIVEMBACCOUNT("The account is not activated for mobile banking."),
-    INVALIDMOBILE("The sender mobile number is invalid.");
-
-
-
-
+    INVALIDMOBILE("The sender mobile number is invalid."),
+    INSUFFICIENTBALANCE("The account’s balance is insufficient to process the transaction."),
+    DUPLICATEDTRANSACTIONID("The details of the message are not matching the original message.");
 
 
     private final String errorMessage;

@@ -36,10 +36,10 @@ public class Withdrawal {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getWithdrawalBody(requestData))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("WithdrawalCompleted.xsd"))
                 .when()
                 .post(EndPoints.WITHDRAWAL);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("WithdrawalCompleted.xsd"));
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "COMPLETED");
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("TransactionID"), requestData.get("TransactionID"));
         Assert.assertTrue(Parser.parseWithdrawalResponse(response).get("Message").contains(requestData.get("Account")));
@@ -58,10 +58,10 @@ public class Withdrawal {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getWithdrawalBody(requestData))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("WithdrawalCompleted.xsd"))
                 .when()
                 .post(EndPoints.WITHDRAWAL);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("WithdrawalCompleted.xsd"));
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "COMPLETED");
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("TransactionID"), requestData.get("TransactionID"));
         Assert.assertTrue(Parser.parseWithdrawalResponse(response).get("Message").contains(requestData.get("Account")));
@@ -80,10 +80,10 @@ public class Withdrawal {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getWithdrawalBody(requestData))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("WithdrawalCompleted.xsd"))
                 .when()
                 .post(EndPoints.WITHDRAWAL);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("WithdrawalCompleted.xsd"));
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "COMPLETED");
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("TransactionID"), requestData.get("TransactionID"));
         Assert.assertTrue(Parser.parseWithdrawalResponse(response).get("Message").contains(requestData.get("Account")));
@@ -102,9 +102,9 @@ public class Withdrawal {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getWithdrawalBody(requestData))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("WithdrawalFailed.xsd"))
                 .when()
                 .post(EndPoints.WITHDRAWAL);
+        response.then().body(matchesXsdInClasspath("WithdrawalFailed.xsd"));
         Logs.info("Response: " + response.asString());
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "FAILED");
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INVALIDACCOUNTSTATUS.getErrorMessage());
@@ -122,10 +122,10 @@ public class Withdrawal {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getWithdrawalBody(requestData))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("WithdrawalFailed.xsd"))
                 .when()
                 .post(EndPoints.WITHDRAWAL);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("WithdrawalFailed.xsd"));
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "FAILED");
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INVALIDACCOUNTSTATUS.getErrorMessage());
     }
@@ -142,10 +142,10 @@ public class Withdrawal {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getWithdrawalBody(requestData))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("WithdrawalFailed.xsd"))
                 .when()
                 .post(EndPoints.WITHDRAWAL);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("WithdrawalFailed.xsd"));
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "FAILED");
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INVALIDACCOUNTSTATUS.getErrorMessage());
     }
@@ -162,18 +162,17 @@ public class Withdrawal {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getWithdrawalBody(requestData))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("WithdrawalFailed.xsd"))
                 .when()
                 .post(EndPoints.WITHDRAWAL);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("WithdrawalFailed.xsd"));
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "FAILED");
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INVALIDCURRENCY.getErrorMessage());
     }
 
-   ////
     @Test
-    public void withdrawalNotEnoughBalance() {
-        HashMap<String, String> requestData = SQLquery.getCurrentRWFAccountNotMoney("A",Double.parseDouble(amount));
+    public void withdrawalInsufficientBalance() {
+        HashMap<String, String> requestData = SQLquery.getCurrentRWFAccountInsufficientBalance(Double.parseDouble(amount));
         requestData.put("TransactionID", SQLquery.getUniqueTransactionID());
         requestData.put("Amount", amount);
         requestData.put("Currency", "RWF");
@@ -183,12 +182,12 @@ public class Withdrawal {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getWithdrawalBody(requestData))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("WithdrawalFailed.xsd"))
                 .when()
                 .post(EndPoints.WITHDRAWAL);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("WithdrawalFailed.xsd"));
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "FAILED");
-        Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INVALIDCURRENCY.getErrorMessage());
+        Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INSUFFICIENTBALANCE.getErrorMessage());
     }
 
     @Test
@@ -203,10 +202,10 @@ public class Withdrawal {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getWithdrawalBody(requestData))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("WithdrawalFailed.xsd"))
                 .when()
                 .post(EndPoints.WITHDRAWAL);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("WithdrawalFailed.xsd"));
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "FAILED");
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INACTIVEMBCUTSOMER.getErrorMessage());
     }
@@ -223,10 +222,10 @@ public class Withdrawal {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getWithdrawalBody(requestData))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("WithdrawalFailed.xsd"))
                 .when()
                 .post(EndPoints.WITHDRAWAL);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("WithdrawalFailed.xsd"));
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "FAILED");
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INACTIVEMBACCOUNT.getErrorMessage());
     }
@@ -243,10 +242,10 @@ public class Withdrawal {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getWithdrawalBody(requestData))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("WithdrawalFailed.xsd"))
                 .when()
                 .post(EndPoints.WITHDRAWAL);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("WithdrawalFailed.xsd"));
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "FAILED");
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INVALIDMOBILE.getErrorMessage());
     }
@@ -263,12 +262,34 @@ public class Withdrawal {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getWithdrawalBody(requestData))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("WithdrawalFailed.xsd"))
                 .when()
                 .post(EndPoints.WITHDRAWAL);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("WithdrawalFailed.xsd"));
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "FAILED");
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.NOTEXISTINGACCOUNT.getErrorMessage());
+    }
+
+    //should be added
+    @Test
+    public void withdrawalDuplicatedTransactionID() {
+        amount = Double.toString(Double.parseDouble(SQLquery.getTransactionMinimumLimit())+0.02);
+        HashMap<String, String> requestData = SQLquery.getCurrentRWFAccountActiveMB("A",Double.parseDouble(amount));
+        requestData.put("TransactionID", SQLquery.getExistingTransactionID());
+        requestData.put("Amount", amount);
+        requestData.put("Currency", "RWF");
+
+        response = given()
+                .spec(requestSpec)
+                .relaxedHTTPSValidation()
+                .body(Bodies.getWithdrawalBody(requestData))
+                .expect().spec(responseSpec)
+                .when()
+                .post(EndPoints.WITHDRAWAL);
+        Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("WithdrawalFailed.xsd"));
+        Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "FAILED");
+        Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.DUPLICATEDTRANSACTIONID.getErrorMessage());
     }
 
     @Test
@@ -284,10 +305,10 @@ public class Withdrawal {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getWithdrawalBody(requestData))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("WithdrawalFailed.xsd"))
                 .when()
                 .post(EndPoints.WITHDRAWAL);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("WithdrawalFailed.xsd"));
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "FAILED");
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.EXCEEDINGMINTRANSLIMIT.getErrorMessage());
     }
@@ -304,10 +325,10 @@ public class Withdrawal {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getWithdrawalInvalidBody(requestData))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("WithdrawalFailed.xsd"))
                 .when()
                 .post(EndPoints.WITHDRAWAL);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("WithdrawalFailed.xsd"));
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "FAILED");
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INVALIDFRIFORMAT.getErrorMessage());
     }
@@ -326,10 +347,10 @@ public class Withdrawal {
                 .relaxedHTTPSValidation()
                 .body(Bodies.getWithdrawalBody(requestData))
                 .expect().spec(responseSpec)
-                .body(matchesXsdInClasspath("WithdrawalFailed.xsd"))
                 .when()
                 .post(EndPoints.WITHDRAWAL);
         Logs.info("Response: " + response.asString());
+        response.then().body(matchesXsdInClasspath("WithdrawalFailed.xsd"));
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Status"), "FAILED");
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INVALIDAUTHENTICATION.getErrorMessage());
     }
