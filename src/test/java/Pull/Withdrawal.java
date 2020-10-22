@@ -46,7 +46,7 @@ public class Withdrawal {
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("ProviderTransactionID"), SQLquery.getVoucherNumber(Parser.parseWithdrawalResponse(response).get("TransactionID")));
     }
 
-    @Test
+    @Test(priority = 2)
     public void withdrawalActiveSavingRWFAccount() {
         HashMap<String, String> requestData = SQLquery.getActiveSavingRWFAccountActiveMB();
         requestData.put("TransactionID", SQLquery.getUniqueTransactionID());
@@ -68,7 +68,7 @@ public class Withdrawal {
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("ProviderTransactionID"), SQLquery.getVoucherNumber(Parser.parseWithdrawalResponse(response).get("TransactionID")));
     }
 
-    @Test
+    @Test(priority = 3)
     public void withdrawalActiveUSDAccount() {
         HashMap<String, String> requestData = SQLquery.getActiveUSDAccountActiveMB();
         requestData.put("TransactionID", SQLquery.getUniqueTransactionID());
@@ -90,7 +90,7 @@ public class Withdrawal {
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("ProviderTransactionID"), SQLquery.getVoucherNumber(Parser.parseWithdrawalResponse(response).get("TransactionID")));
     }
 
-    @Test
+    @Test(priority = 4)
     public void withdrawalBlockedByCollateralRWFAccount() {
         HashMap<String, String> requestData = SQLquery.getCurrentRWFAccountActiveMB("G");
         requestData.put("TransactionID", SQLquery.getUniqueTransactionID());
@@ -110,7 +110,7 @@ public class Withdrawal {
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INVALIDACCOUNTSTATUS.getErrorMessage());
     }
 
-    @Test
+    @Test(priority = 5)
     public void withdrawalBlockedForWithdrawalRWFAccount() {
         HashMap<String, String> requestData = SQLquery.getCurrentRWFAccountActiveMB("R");
         requestData.put("TransactionID", SQLquery.getUniqueTransactionID());
@@ -130,7 +130,7 @@ public class Withdrawal {
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INVALIDACCOUNTSTATUS.getErrorMessage());
     }
 
-    @Test
+    @Test(priority = 6)
     public void withdrawalBlockedRWFAccount() {
         HashMap<String, String> requestData = SQLquery.getCurrentRWFAccountActiveMB("B");
         requestData.put("TransactionID", SQLquery.getUniqueTransactionID());
@@ -150,7 +150,7 @@ public class Withdrawal {
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INVALIDACCOUNTSTATUS.getErrorMessage());
     }
 
-    @Test
+    @Test(priority = 7)
     public void withdrawalInvalidCurrency() {
         HashMap<String, String> requestData = SQLquery.getCurrentRWFAccountActiveMB("A",Double.parseDouble(amount));
         requestData.put("TransactionID", SQLquery.getUniqueTransactionID());
@@ -170,7 +170,7 @@ public class Withdrawal {
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INVALIDCURRENCY.getErrorMessage());
     }
 
-    @Test
+    @Test(priority = 8)
     public void withdrawalInsufficientBalance() {
         HashMap<String, String> requestData = SQLquery.getCurrentRWFAccountInsufficientBalance(Double.parseDouble(amount));
         requestData.put("TransactionID", SQLquery.getUniqueTransactionID());
@@ -190,7 +190,7 @@ public class Withdrawal {
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INSUFFICIENTBALANCE.getErrorMessage());
     }
 
-    @Test
+    @Test(priority = 9)
     public void withdrawalInactiveCustomerMB() {
         HashMap<String, String> requestData = SQLquery.getAccountInactiveCustomerMB();
         requestData.put("TransactionID", SQLquery.getUniqueTransactionID());
@@ -210,7 +210,7 @@ public class Withdrawal {
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INACTIVEMBCUTSOMER.getErrorMessage());
     }
 
-    @Test
+    @Test(priority = 10)
     public void withdrawalInactiveAccountMB() {
         HashMap<String, String> requestData = SQLquery.getAccountInactiveAccountMB();
         requestData.put("TransactionID", SQLquery.getUniqueTransactionID());
@@ -230,7 +230,7 @@ public class Withdrawal {
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INACTIVEMBACCOUNT.getErrorMessage());
     }
 
-    @Test
+    @Test(priority = 11)
     public void withdrawalNotMatchingPhone() {
         HashMap<String, String> requestData = SQLquery.getNotMatchingPhoneActiveMB();
         requestData.put("TransactionID", SQLquery.getUniqueTransactionID());
@@ -250,7 +250,7 @@ public class Withdrawal {
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.INVALIDMOBILE.getErrorMessage());
     }
 
-    @Test
+    @Test(priority = 12)
     public void withdrawalNotExistingAccount() {
         HashMap<String, String> requestData = SQLquery.getNotExistingAccountMB();
         requestData.put("TransactionID", SQLquery.getUniqueTransactionID());
@@ -270,8 +270,8 @@ public class Withdrawal {
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.NOTEXISTINGACCOUNT.getErrorMessage());
     }
 
-    //should be added
-    @Test
+
+    @Test(priority = 13)
     public void withdrawalDuplicatedTransactionID() {
         amount = Double.toString(Double.parseDouble(SQLquery.getTransactionMinimumLimit())+0.02);
         HashMap<String, String> requestData = SQLquery.getCurrentRWFAccountActiveMB("A",Double.parseDouble(amount));
@@ -292,7 +292,7 @@ public class Withdrawal {
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.DUPLICATEDTRANSACTIONID.getErrorMessage());
     }
 
-    @Test
+    @Test(priority = 14)
     public void withdrawalExceedingMinTransactionLimit() {
         amount = Double.toString(Double.parseDouble(SQLquery.getTransactionMinimumLimit())-0.01);
         HashMap<String, String> requestData = SQLquery.getCurrentRWFAccountActiveMB("A",Double.parseDouble(amount));
@@ -313,7 +313,7 @@ public class Withdrawal {
         Assert.assertEquals(Parser.parseWithdrawalResponse(response).get("Message"), APIError.EXCEEDINGMINTRANSLIMIT.getErrorMessage());
     }
 
-    @Test
+    @Test(priority = 15)
     public void withdrawalInvalidFRIFormat() {
         HashMap<String, String> requestData = SQLquery.getCurrentRWFAccountActiveMB("A");
         requestData.put("TransactionID", SQLquery.getUniqueTransactionID());
@@ -334,7 +334,7 @@ public class Withdrawal {
     }
 
 
-    @Test
+    @Test(priority = 16)
     public void withdrawalInvalidAuthorization() {
         requestSpec = APISpecification.getInvalidRequestSpecification();
         HashMap<String, String> requestData = SQLquery.getCurrentRWFAccountActiveMB("A");
